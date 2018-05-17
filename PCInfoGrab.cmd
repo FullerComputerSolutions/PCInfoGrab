@@ -6,7 +6,7 @@ PCInfoGrab.cmd
 Gets PC Information. Rev 18.05.17
 BuildInfo
 copy /b 7zS.sfx + config.txt + PCInfoGrab.7z PCInfoGrab.exe
- v18.05.17 Added build script to make building exe easier, allowing option to skip speedtest on slow connections, re-added Admin elevation to config.txt, added PSTPassword, fixed NBTStat not running in 64bit OS.
+ v18.05.17 Added build script to make building exe easier, allowing option to skip speedtest on slow connections, re-added Admin elevation to config.txt, added PSTPassword, fixed NBTStat not running in 64bit OS. Properly synced with github.
  v18.05.08 Added AutoCAD Serial Prompt, updated apps. Replaced iepv.exe with webbrowserpassview.exe
  v17.01.18 Added notes prompt
 ======================================================================================================
@@ -125,12 +125,12 @@ set arch=x64
 
 echo Current User Shell Folder Locations...
 echo Current User Shell Folder Locations >> %text% 2> nul
-reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /s | find /i /v "HKEY" | find /i /v "REG.EXE" >> %text%
+reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /s | find /i /v "HKEY" | find /i /v "REG.EXE" >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 
 echo Default Browser...
-echo Default Browser >> %text%
+echo Default Browser >> %text% 2> nul
 reg QUERY HKEY_CLASSES_ROOT\http\shell\open\command /ve >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
@@ -178,12 +178,13 @@ if %ERRORLEVEL%==1 goto :YesST
 if %ERRORLEVEL%==2 goto :NoST
 :YesST
 echo Speedtest Running, please wait...
+echo Speedtest >> %text% 2> nul
 downtester.exe /hidden /stext "" >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 goto :AfterST
 :NoST
-echo Skipped >> %text% 2> nul
+echo Skipped
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 :AfterST
@@ -249,7 +250,7 @@ echo .............................................. >> %text% 2> nul
 echo PST Passwords...
 echo PST Passwords >> %text% 2> nul
 PSTPassword.exe /stext pstpwd.txt 2> nul
-copy /a %text% + pstpwd.txt 2> nul
+copy /a %text% + pstpwd.txt > NUL 2>&1
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 
@@ -257,14 +258,14 @@ echo .............................................. >> %text% 2> nul
 echo DUN/VPN Info...
 echo DUN/VPN Info >> %text% 2> nul
 dialupass.exe /stext vpn.txt 2> nul
-copy /a %text% + vpn.txt 2> nul
+copy /a %text% + vpn.txt > NUL 2>&1
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 
 echo WebsitePW...
 echo WebsitePW >> %text% 2> nul
 WebBrowserPassView.exe /stext webpwd.txt 2> nul
-copy /a %text% + webpwd.txt 2> nul
+copy /a %text% + webpwd.txt > NUL 2>&1
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 
@@ -282,7 +283,8 @@ echo Default Printer >> %text% 2> nul
 reg query "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows" /v Device >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
-
+REM Debug Pause
+pause
 cls
 color 0C
 ::[1;31m
