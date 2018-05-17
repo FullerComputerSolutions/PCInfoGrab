@@ -178,13 +178,12 @@ if %ERRORLEVEL%==1 goto :YesST
 if %ERRORLEVEL%==2 goto :NoST
 :YesST
 echo Speedtest Running, please wait...
-echo Speedtest >> %text% 2> nul
 downtester.exe /hidden /stext "" >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 goto :AfterST
 :NoST
-echo Skipped
+echo Skipped >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 echo .............................................. >> %text% 2> nul
 :AfterST
